@@ -5,19 +5,6 @@ import TrackersSection from './TrackersSection/TrackersSection';
 import axios from 'axios';
 import AddCurrencyDialog from './Dialogs/AddCurrencyDialog';
 import SetAlertLevelDialog from './Dialogs/SetAlertLevelDialog';
-import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
-import IconButton from '@material-ui/core/IconButton';
-import Transitions from './Transitions/Transitions';
-
-const Transition = (props) => {
-  return (
-    <Slide direction='up' {...props} />
-  );
-}
 
 class App extends Component {
   state = {
@@ -43,41 +30,24 @@ class App extends Component {
       });
   }
 
-  closeCurrencyDialog = () => {
+  openDialogs = name => () => {
     this.setState({
-      currencyDialogOpen: false
+      [name]: true
     });
   };
 
-  openCurrencyDialog = () => {
+  closeDialogs = name => () => {
     this.setState({
-      currencyDialogOpen: true
+      [name]: false
     });
   };
 
-  closeAlertLevelDialog = () => {
+  handleCurrencySelection = name => event => {
     this.setState({
-      alertLevelDialogOpen: false
+      [name]: event.target.value
     });
   };
 
-  openAlertLevelDialog = () => {
-    this.setState({
-      alertLevelDialogOpen: true
-    });
-  }
-
-  handleCurrency1Selection = event => {
-    this.setState({
-      currency1Id: event.target.value
-    });
-  };
-
-  handleCurrency2Selection = event => {
-    this.setState({
-      currency2Id: event.target.value
-    });
-  };
 
   handleAlertLevelInput = event => {
     this.setState({
@@ -86,8 +56,8 @@ class App extends Component {
   };
 
   handleCurrencyPageSubmission = () => {
-    this.closeCurrencyDialog();
-    this.openAlertLevelDialog();
+    this.closeDialogs('currencyDialogOpen')();
+    this.openDialogs('alertLevelDialogOpen')();
     axios.post('http://localhost:5000/api/tracker/new', {
       currency1Id: this.state.currency1Id,
       currency2Id: this.state.currency2Id
@@ -102,7 +72,7 @@ class App extends Component {
   };
 
   handleAlertLevelSubmission = () => {
-    this.closeAlertLevelDialog();
+    this.closeDialogs('alertLevelDialogOpen')();
     const { newTrackerId, alertLevel } = this.state;
     axios.post(`http://localhost:5000/api/tracker/${newTrackerId}/level/new`, {
       alertLevel: parseFloat(alertLevel)
@@ -113,10 +83,8 @@ class App extends Component {
       });
   };
 
-  handleAlert
-
   render() {
-    const { trackers, currencyDialogOpen, levelDialogOpen, currency1Id, currency2Id, alertLevelDialogOpen, newTrackerId, alertLevel } = this.state;
+    const { trackers, currencyDialogOpen, currency1Id, currency2Id, alertLevelDialogOpen, alertLevel } = this.state;
     return (
       <div>
         <NavBar />
@@ -124,23 +92,23 @@ class App extends Component {
           type='add'
           buttonStyle={{ position: 'absolute', bottom: '8vh', right: '10vw', backgroundColor: '#247D96', zIndex: 2 }}
           iconStyle={{ color: 'white' }}
-          openCurrencyDialog={this.openCurrencyDialog}
+          openCurrencyDialog={this.openDialogs('currencyDialogOpen')}
         />
         <TrackersSection trackers={trackers} fetchTrackersData={this.fetchTrackersData} />
         <AddCurrencyDialog
           currencyDialogOpen={currencyDialogOpen}
-          closeCurrencyDialog={this.closeCurrencyDialog}
-          openAlertLevelDialog={this.openAlertLevelDialog}
+          closeCurrencyDialog={this.closeDialogs('currencyDialogOpen')}
+          openAlertLevelDialog={this.openDialogs('alertLevelDialogOpen')}
           currency1Id={currency1Id}
           currency2Id={currency2Id}
-          handleCurrency1Selection={this.handleCurrency1Selection}
-          handleCurrency2Selection={this.handleCurrency2Selection}
+          handleCurrency1Selection={this.handleCurrencySelection('currency1Id')}
+          handleCurrency2Selection={this.handleCurrencySelection('currency2Id')}
           handleCurrencyPageSubmission={this.handleCurrencyPageSubmission}
         />
         <SetAlertLevelDialog
           alertLevel={alertLevel}
           alertLevelDialogOpen={alertLevelDialogOpen}
-          closeAlertLevelDialog={this.closeAlertLevelDialog}
+          closeAlertLevelDialog={this.closeDialogs('alertLevelDialogOpen')}
           handleAlertLevelInput={this.handleAlertLevelInput}
           handleAlertLevelSubmission={this.handleAlertLevelSubmission}
         />

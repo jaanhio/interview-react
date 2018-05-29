@@ -1,10 +1,10 @@
 import React from 'react';
-import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
-import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@material-ui/core/Dialog';
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import styled from 'styled-components';
 import Transitions from '../Transitions/Transitions';
@@ -19,18 +19,18 @@ const StyledForm = styled.form`
   flex-direction: column;
 `;
 
-const SetAlertLevelDialog = (props) => {
-  const { handleAlertLevelInput, alertLevelDialogOpen, closeAlertLevelDialog, alertLevel, handleAlertLevelSubmission } = props;
+const EditAlertLevelDialog = (props) => {
+  const { editDialogOpen, closeEditDialog, alertLevel, handleAlertLevelInputs, handleAlertLevelUpdateSubmission } = props;
   return (
     <Dialog
       fullScreen
-      open={alertLevelDialogOpen}
-      onClose={closeAlertLevelDialog}
+      open={editDialogOpen}
+      onClose={closeEditDialog}
       TransitionComponent={Transitions}
     >
       <AppBar style={{ backgroundColor: 'white', boxShadow: 'none' }}>
         <Toolbar>
-          <IconButton onClick={closeAlertLevelDialog} aria-label='Close'>
+          <IconButton onClick={closeEditDialog} aria-label='Close'>
             <CloseIcon />
           </IconButton>
         </Toolbar>
@@ -41,13 +41,13 @@ const SetAlertLevelDialog = (props) => {
           id='alertLevel'
           label='Alert Level'
           value={alertLevel}
-          onChange={handleAlertLevelInput}
+          onChange={handleAlertLevelInputs}
           style={{ width: '70vw', alignSelf: 'center', marginBottom: 20 }}
         />
-        <Button onClick={handleAlertLevelSubmission} style={{ backgroundColor: '#247D96', color: 'white', width: '50%', alignSelf: 'center' }}>Add Alert</Button>
+        <Button onClick={handleAlertLevelUpdateSubmission} style={{ backgroundColor: '#247D96', color: 'white', width: '50%', alignSelf: 'center' }}>Update</Button>
       </StyledForm>
     </Dialog>
-  )
+  );
 }
 
-export default SetAlertLevelDialog;
+export default EditAlertLevelDialog;

@@ -19,18 +19,18 @@ const StyledForm = styled.form`
   flex-direction: column;
 `;
 
-const SetAlertLevelDialog = (props) => {
-  const { handleAlertLevelInput, alertLevelDialogOpen, closeAlertLevelDialog, alertLevel, handleAlertLevelSubmission } = props;
+const AddNewAlertLevelDialog = (props) => {
+  const { addNewDialogOpen, closeAddNewAlertDialog, handleAddNewAlertLevel, newAlertLevel, handleAlertLevelInputs } = props;
   return (
     <Dialog
       fullScreen
-      open={alertLevelDialogOpen}
-      onClose={closeAlertLevelDialog}
+      open={addNewDialogOpen}
+      onClose={closeAddNewAlertDialog}
       TransitionComponent={Transitions}
     >
       <AppBar style={{ backgroundColor: 'white', boxShadow: 'none' }}>
         <Toolbar>
-          <IconButton onClick={closeAlertLevelDialog} aria-label='Close'>
+          <IconButton onClick={closeAddNewAlertDialog} aria-label='Close'>
             <CloseIcon />
           </IconButton>
         </Toolbar>
@@ -40,14 +40,14 @@ const SetAlertLevelDialog = (props) => {
           required
           id='alertLevel'
           label='Alert Level'
-          value={alertLevel}
-          onChange={handleAlertLevelInput}
+          value={newAlertLevel}
+          onChange={handleAlertLevelInputs}
           style={{ width: '70vw', alignSelf: 'center', marginBottom: 20 }}
         />
-        <Button onClick={handleAlertLevelSubmission} style={{ backgroundColor: '#247D96', color: 'white', width: '50%', alignSelf: 'center' }}>Add Alert</Button>
+        <Button onClick={handleAddNewAlertLevel} style={{ backgroundColor: '#247D96', color: 'white', width: '50%', alignSelf: 'center' }}>Add Alert</Button>
       </StyledForm>
     </Dialog>
   )
 }
 
-export default SetAlertLevelDialog;
+export default AddNewAlertLevelDialog;
